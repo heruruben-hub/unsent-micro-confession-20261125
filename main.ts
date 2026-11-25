@@ -48,6 +48,12 @@ function validate(text: string): void {
   if (!lines[0].startsWith("To:")) {
     throw new Error('first line must be the "To:" line');
   }
+  // The To: line must actually name someone: a bare "To:" with
+  // nothing after it names no addressee, and the judge needs the
+  // addressee and the message to need each other.
+  if (lines[0].slice(3).trim().length === 0) {
+    throw new Error('the "To:" line names nobody');
+  }
 }
 
 const outPath = process.env.OUTPUT_PATH ?? "/output/entry.txt";
